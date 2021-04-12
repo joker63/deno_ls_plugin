@@ -21,7 +21,7 @@ function init() {
     ) => {
       moduleNames = moduleNames.map(moduleName => {
         // For any modules ending with `.ts` we will strip that off
-        if (moduleName.endsWith(".ts")) {
+        if (moduleName.endsWith(".ts")||moduleName.endsWith(".tsx")) {
           const newName = moduleName.slice(0, -3);
           info.project.projectService.logger.info(
             `deno_ls_plugin: transform "${moduleName}" to "${newName}"`
