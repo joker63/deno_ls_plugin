@@ -1,8 +1,8 @@
-import "typescript/lib/tsserverlibrary";
+import 'typescript/lib/tsserverlibrary';
 
 function init() {
   function create(info: ts.server.PluginCreateInfo): ts.LanguageService {
-    info.project.projectService.logger.info("deno_ls_plugin: setup");
+    info.project.projectService.logger.info('deno_ls_plugin: setup');
 
     // TypeScript only officially supports proxying the LanguageService, but
     // for Deno, we just want to adjust module names that end with `.ts` so
@@ -19,10 +19,18 @@ function init() {
       reusedNames,
       redirectedReference
     ) => {
-      moduleNames = moduleNames.map(moduleName => {
+      moduleNames = moduleNames.map((moduleName) => {
         // For any modules ending with `.ts` we will strip that off
-        if (moduleName.endsWith(".ts") || moduleName.endsWith(".tsx")) {
+        if (moduleName.endsWith('.ts')) {
           const newName = moduleName.slice(0, -3);
+          info.project.projectService.logger.info(
+            `deno_ls_plugin: transform "${moduleName}" to "${newName}"`
+          );
+          return newName;
+        }
+
+        if (moduleName.endsWith('.tsx')) {
+          const newName = moduleName.slice(0, -4);
           info.project.projectService.logger.info(
             `deno_ls_plugin: transform "${moduleName}" to "${newName}"`
           );
